@@ -34,10 +34,21 @@ export async function getTodo(id: string) {
   })
 }
 
-export async function getTodos() {
+export async function getTodos(completed: boolean | undefined, order: string) {
+  if (completed === undefined) {
+    return db.todo.findMany({
+      orderBy: {
+        createdAt: order as 'asc' | 'desc'
+      }
+    })
+  }
+
   return await db.todo.findMany({
+    where: {
+      completed
+    },
     orderBy: {
-      createdAt: 'asc'
+      createdAt: order as 'asc' | 'desc'
     }
   })
 }

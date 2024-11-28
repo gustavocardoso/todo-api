@@ -78,7 +78,14 @@ async function TodoRoutes(fastify: FastifyInstance) {
       schema: {
         description: 'Get all todos',
         tags: ['todo'],
-        summary: 'Retrive all todos from the database'
+        summary: 'Retrive all todos from the database',
+        querystring: {
+          type: 'object',
+          properties: {
+            completed: { type: 'boolean', default: undefined },
+            order: { type: 'string', default: 'asc' }
+          }
+        }
       }
     },
     getTodosHandler

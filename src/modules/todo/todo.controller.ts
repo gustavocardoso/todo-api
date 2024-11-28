@@ -35,8 +35,13 @@ export async function updateTodoHandler(
   return todo
 }
 
-export async function getTodosHandler() {
-  const todos = await getTodos()
+export async function getTodosHandler(
+  request: FastifyRequest<{ Querystring: { completed?: boolean | undefined; order: string } }>,
+  reply: FastifyReply
+) {
+  const completed = request.query.completed as boolean
+  const order = request.query.order
+  const todos = await getTodos(completed, order)
   return todos
 }
 

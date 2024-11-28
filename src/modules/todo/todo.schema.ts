@@ -9,9 +9,11 @@ const todoInput = {
 
 const updateTodoInput = {
   id: z.string().optional(),
-  title: z.string({
-    required_error: 'Title is required!'
-  }),
+  title: z
+    .string({
+      required_error: 'Title is required!'
+    })
+    .optional(),
   completed: z.boolean().default(false)
 }
 
