@@ -12,7 +12,10 @@ export async function createTodoHandler(
   request: FastifyRequest<{ Body: CreateTodoInput }>,
   reply: FastifyReply
 ) {
-  const todo = await createTodo(request.body)
+  const todo = await createTodo({
+    ...request.body,
+    userId: request.user.id
+  })
   return todo
 }
 

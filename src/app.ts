@@ -3,8 +3,6 @@ import cors from '@fastify/cors'
 import fjwt from '@fastify/jwt'
 import Fastify, { FastifyReply, FastifyRequest } from 'fastify'
 import { UserPayload } from '../global'
-import productRoutes from './modules/product/product.route'
-import { productSchemas } from './modules/product/product.schema'
 import TodoRoutes from './modules/todo/todo.route'
 import { todoSchemas } from './modules/todo/todo.schema'
 import userRoutes from './modules/user/user.route'
@@ -52,7 +50,7 @@ fastify.register(fCookie, {
 })
 
 async function main() {
-  for (const schema of [...userSchemas, ...productSchemas, ...todoSchemas]) {
+  for (const schema of [...userSchemas, ...todoSchemas]) {
     fastify.addSchema(schema) // should be add these schemas before you register your routes
   }
 
@@ -90,7 +88,6 @@ async function main() {
   })
 
   await fastify.register(userRoutes, { prefix: 'api/users' })
-  await fastify.register(productRoutes, { prefix: 'api/products' })
   await fastify.register(TodoRoutes, { prefix: 'api/todos' })
 
   // Executes Swagger

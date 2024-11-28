@@ -1,7 +1,7 @@
 import { db } from '../../utils/prisma'
 import { CreateTodoInput, DeleteTodoInput, UpdateTodoInput } from './todo.schema'
 
-export async function createTodo(data: CreateTodoInput) {
+export async function createTodo(data: CreateTodoInput & { userId: string }) {
   return await db.todo.create({
     data
   })

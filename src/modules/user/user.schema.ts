@@ -19,7 +19,7 @@ const createUserSchema = z.object({
 })
 
 const createUserResponseSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   ...userCore
 })
 
