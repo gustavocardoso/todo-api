@@ -26,17 +26,24 @@ export async function deleteTodo(data: DeleteTodoInput) {
   })
 }
 
-export async function getTodo(id: string) {
+export async function getTodo(id: string, userId: string) {
   return await db.todo.findUnique({
     where: {
-      id
+      id_userId: {
+        // Use the automatically generated compound unique name
+        id,
+        userId
+      }
     }
   })
 }
 
-export async function getTodos(completed: boolean | undefined, order: string) {
+export async function getTodos(completed: boolean | undefined, order: string, userId: string) {
   if (completed === undefined) {
     return db.todo.findMany({
+      where: {
+        userId
+      },
       orderBy: {
         createdAt: order as 'asc' | 'desc'
       }
@@ -45,7 +52,8 @@ export async function getTodos(completed: boolean | undefined, order: string) {
 
   return await db.todo.findMany({
     where: {
-      completed
+      completed,
+      userId
     },
     orderBy: {
       createdAt: order as 'asc' | 'desc'

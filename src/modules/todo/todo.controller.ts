@@ -25,10 +25,15 @@ export async function updateTodoHandler(
 ) {
   const { title, completed } = request.body
   const { id } = request.params
-  const existingTodo = await getTodo(id)
+  const userId = request.user.id
 
-  if (!existingTodo) {
-    return reply.code(404).send({ message: 'Todo not found!' })
+  try {
+    const existingTodo = await getTodo(id, userId)
+    if (!existingTodo) {
+      return reply.code(404).send({ message: 'Todo not found!' })
+    }
+  } catch (error) {
+    console.log(error)
   }
 
   const todo = await updateTodo({ id, title, completed })
@@ -41,7 +46,8 @@ export async function getTodosHandler(
 ) {
   const completed = request.query.completed as boolean
   const order = request.query.order
-  const todos = await getTodos(completed, order)
+  const userId = request.user.id
+  const todos = await getTodos(completed, order, userId)
   return todos
 }
 
@@ -50,7 +56,8 @@ export async function deleteTodoHandler(
   reply: FastifyReply
 ) {
   const { id } = request.params
-  const existingTodo = await getTodo(id)
+  const userId = request.user.id
+  const existingTodo = await getTodo(id, userId)
 
   if (!existingTodo) {
     return reply.code(404).send({ message: 'Todo not found!' })
